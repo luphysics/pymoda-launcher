@@ -15,7 +15,6 @@ func main() {
 	_ = os.MkdirAll(wd, os.ModeDir)
 
 	os.Chdir(wd)
-	println(wd)
 
 	files := listFiles()
 	version := getVersionToLaunch(files)
@@ -48,11 +47,12 @@ func getVersionToLaunch(files []string) string {
 }
 
 func launchPyMODA(directory string) {
-	args := strings.Join(os.Args[1:], " ")
-	args += "--launcher"
+	args := append(os.Args[1:], "--launcher")
 
-	if isLinux() {
-		cmd := exec.Command(directory+"/PyMODA", args)
+	if false || isLinux() {
+		cmd := exec.Command(directory+"/PyMODA", args...)
+		println(directory+"/PyMODA", strings.Join(args, " "))
+
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
@@ -61,7 +61,14 @@ func launchPyMODA(directory string) {
 			println("Failed to launch PyMODA.")
 		}
 	} else {
-		cmd := exec.Command("open "+directory+"/PyMODA.app", "--args", args)
+		macArgs := []string{"--args"}
+		for _, a := range args {
+			macArgs = append(macArgs, a)
+		}
+
+		cmd := exec.Command("open "+directory+"/PyMODA.app", macArgs...)
+		println("open "+directory+"/PyMODA.app", strings.Join(macArgs, " "))
+
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()

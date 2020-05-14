@@ -17,3 +17,19 @@ To compile the launcher for your platform, install Go and run:
 ```
 go build launcher.go
 ```
+
+### Cross-compiling from Windows
+
+#### Compiling for Linux
+
+```powershell
+$env:GOOS="linux"
+go build -o launcher-linux launcher.go
+```
+
+#### Compiling for macOS
+
+```powershell
+$env:GOOS="darwin"
+go build -o launcher-macos launcher.go
+```

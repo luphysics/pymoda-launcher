@@ -49,7 +49,7 @@ func getVersionToLaunch(files []string) string {
 func launchPyMODA(directory string) {
 	args := append(os.Args[1:], "--launcher")
 
-	if false || isLinux() {
+	if isLinux() {
 		cmd := exec.Command(directory+"/PyMODA", args...)
 		println(directory+"/PyMODA", strings.Join(args, " "))
 
@@ -61,13 +61,8 @@ func launchPyMODA(directory string) {
 			println("Failed to launch PyMODA.")
 		}
 	} else {
-		macArgs := []string{"--args"}
-		for _, a := range args {
-			macArgs = append(macArgs, a)
-		}
-
-		cmd := exec.Command("open "+directory+"/PyMODA.app", macArgs...)
-		println("open "+directory+"/PyMODA.app", strings.Join(macArgs, " "))
+		cmd := exec.Command(directory+"/PyMODA.app/Contents/MacOS/PyMODA", args...)
+		println(directory+"/PyMODA.app/Contents/MacOS/PyMODA", strings.Join(args, " "))
 
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
